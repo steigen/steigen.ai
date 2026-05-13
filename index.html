@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Steigen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Cormorant+Garamond:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f4f7fb;
+            --bg-alt: #edf2f7;
+            --fg: #111827;
+            --muted: #6b7280;
+            --line: rgba(17, 24, 39, 0.14);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at top left, rgba(190, 205, 220, 0.28), transparent 30%),
+                linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+            color: var(--fg);
+            font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+            font-weight: 400;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0) 20%),
+                radial-gradient(ellipse at center, rgba(255, 255, 255, 0) 52%, rgba(120, 137, 156, 0.08) 100%);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.12;
+            mix-blend-mode: multiply;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.22  0 0 0 0 0.31  0 0 0 0 0.4  0 0 0 0.22 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+        }
+
+        .veil {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, #0f1722 0%, #1d2733 100%);
+            z-index: 9999;
+            pointer-events: none;
+            animation: veil-out 1.6s ease-out forwards;
+        }
+
+        @keyframes veil-out {
+            0% {
+                opacity: 1;
+            }
+
+            35% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .frame {
+            position: relative;
+            z-index: 3;
+            min-height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            padding: 2rem clamp(1.5rem, 4vw, 3rem);
+        }
+
+        header,
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        main {
+            width: min(100%, 760px);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: clamp(4rem, 10vh, 6rem) 1rem;
+            opacity: 0;
+            animation: rise 1.4s cubic-bezier(.2, .7, .2, 1) 0.45s forwards;
+        }
+
+        @keyframes rise {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: "Cormorant Garamond", ui-serif, Georgia, serif;
+            font-weight: 400;
+            font-size: clamp(4.5rem, 14vw, 9rem);
+            line-height: 1.08;
+            letter-spacing: 0.01em;
+            margin: 0;
+            padding-bottom: 0.14em;
+            color: var(--fg);
+            text-shadow: none;
+        }
+
+        .rule {
+            width: 72px;
+            height: 1px;
+            background: var(--line);
+            opacity: 1;
+            margin: 2rem 0 1.75rem;
+        }
+
+        .lede {
+            max-width: 34rem;
+            font-size: clamp(1.05rem, 1.45vw, 1.15rem);
+            line-height: 1.75;
+            color: var(--fg);
+            margin: 0 0 1.25rem;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        .soon {
+            color: var(--muted);
+            font-size: 0.98rem;
+            letter-spacing: 0.01em;
+            margin: 0;
+        }
+
+        footer .left,
+        footer .right {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .veil {
+                display: none;
+            }
+
+            main {
+                opacity: 1;
+                animation: none;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .frame {
+                padding: 1.25rem;
+            }
+
+            header,
+            footer {
+                font-size: 0.66rem;
+                letter-spacing: 0.16em;
+            }
+
+            h1 {
+                font-size: clamp(4rem, 22vw, 6rem);
+            }
+        }
+
+        noscript {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="veil"></div>
+    <div class="frame">
+        <header>
+            <span class="mark">Steigen</span>
+            <time id="utc-datetime" datetime="">Launching in</time>
+        </header>
+
+        <main>
+            <div class="eyebrow"><!-- TODO --></div>
+            <h1>Steigen</h1>
+            <div class="rule"></div>
+            <p class="lede">Steigen is a company. We are building quietly, with care, and without hurry.</p>
+            <p class="soon">More soon.</p>
+        </main>
+
+        <footer>
+            <span class="left">&copy; 2026 Steigen.</span>
+            <span class="right">steigen.ai</span>
+        </footer>
+    </div>
+    <script>
+        const utcDateTime = document.getElementById("utc-datetime");
+
+        if (utcDateTime && globalThis.Temporal?.Now) {
+            const openingUtc = Temporal.Now.instant()
+                .toZonedDateTimeISO("UTC")
+                .add({ years: 1 });
+
+            const openingInstant = openingUtc.toInstant();
+            utcDateTime.dateTime = openingInstant.toString();
+            utcDateTime.title = openingUtc.toString({
+                smallestUnit: "second",
+                timeZoneName: "never"
+            }) + " UTC";
+
+            const formatUnit = (value) => String(value).padStart(2, "0");
+
+            const renderCountdown = () => {
+                const now = Temporal.Now.instant();
+
+                if (Temporal.Instant.compare(now, openingInstant) >= 0) {
+                    utcDateTime.textContent = "Live now";
+                    return;
+                }
+
+                let remainingSeconds = Math.max(
+                    0,
+                    Math.floor((openingInstant.epochMilliseconds - now.epochMilliseconds) / 1000)
+                );
+                const days = Math.floor(remainingSeconds / 86400);
+                remainingSeconds -= days * 86400;
+                const hours = Math.floor(remainingSeconds / 3600);
+                remainingSeconds -= hours * 3600;
+                const minutes = Math.floor(remainingSeconds / 60);
+                const seconds = remainingSeconds - minutes * 60;
+
+                utcDateTime.textContent = "Launching in "
+                    + days + "d "
+                    + formatUnit(hours) + ":"
+                    + formatUnit(minutes) + ":"
+                    + formatUnit(seconds);
+            };
+
+            renderCountdown();
+            globalThis.setInterval(renderCountdown, 1000);
+        }
+    </script>
+</body>
+
+</html>
